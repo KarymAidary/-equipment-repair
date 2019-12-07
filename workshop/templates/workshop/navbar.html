@@ -1,0 +1,30 @@
+{% load static i18n %}
+<header class="visible-header">
+    <div class="menu">
+        <div class="menu-icon">
+            <span class="ti-menu"></span>
+        </div>
+        <a href="{% url 'services' %}" class="logo-desktop"></a>
+        <nav class="main-menu">
+            <section class="menu-dropdown">
+                <a class="button-dropdown">{% trans 'services' %}
+                    <span class="ti-angle-down"></span>
+                </a>
+                <nav class="content-dropdown">
+                    <a href="{% url 'services' %}">{% trans 'Main page' %}</a>
+                    {% for category in category_list %}
+                        <a href="{% url 'workshop:service' category.slug %}">{{ category.name }}</a>
+                    {% endfor %}
+                </nav>
+            </section>
+        </nav>
+        <div class="cart-header">
+            <a href="{% url 'workshop:checkout' %}">
+            <span class="ti-shopping-cart">
+                <span class="header-user-counter">{{ product_total }}</span>
+            </span>
+            </a>
+        </div>
+    </div>
+</header>
+

@@ -24,7 +24,6 @@ class CategoryAdmin(admin.ModelAdmin):
 class ServiceAdmin(admin.ModelAdmin):
     list_display = [field.name for field in Service._meta.fields]
     list_filter = ('category', 'price', 'discount')
-    exclude = ('old_price', 'slug')
 
     class Meta:
         model = Service

@@ -1,0 +1,62 @@
+{% extends 'workshop/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="main-wrapper">
+        <div class="main-container">
+            <div class="product-container">
+                <div class="header">showing: {{ object_list|length }} services</div>
+                <div class="product-box">
+                    {% for product in object_list %}
+                        <div class="product-item">
+                            <div class="product-item-thumbnail spinner">
+                                <a class="product-item-thumbnail-link"
+                                   href="{% url 'workshop:service_detail' product.category.slug product.slug %}"></a>
+                                <img class="lazy" src="{{ product.image.url }}" alt="{{ product.name }}">
+                            </div>
+                            <div class="product-item-thumbnail-record">
+                                <div class="product-item-thumbnail-name">
+                                    <a href="{% url 'workshop:service_detail' product.category.slug product.slug %}">{{ product.name }}</a>
+                                </div>
+                                <div class="product-item-thumbnail-price">
+                                    {% if new_product.discount > 0 %}
+                                        <del class="product-item-price-old">
+                                            €{{ new_product.old_price }}</del>
+                                    {% endif %}
+                                    <span class="product-item-price">€{{ product.price }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            <nav class="pagination-container" aria-label="Page navigation">
+                        {% if is_paginated %}
+                            <ul class="pagination">
+                                {% if page_obj.has_previous %}
+                                    <li><a class="page-link"
+                                           href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                                {% else %}
+                                    <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+                                {% endif %}
+                                {% for i in paginator.page_range %}
+                                    {% if page_obj.number == i %}
+                                        <li class="page-item active"><span class="page-link">{{ i }} <span
+                                                class="sr-only">(current)</span></span></li>
+                                    {% else %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if page_obj.has_next %}
+                                    <li class="page-item"><a class="page-link"
+                                                             href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+                                {% endif %}
+                            </ul>
+                        {% endif %}
+                    </nav>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

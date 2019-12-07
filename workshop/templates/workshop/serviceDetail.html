@@ -1,0 +1,52 @@
+{% extends 'workshop/base.html' %}
+{% load static i18n %}
+{% block content %}
+    <div class="popUp">
+        <div class="popUp-body">
+            <span class="ti-check-box"></span>
+        </div>
+    </div>
+    <div class="main-wrapper">
+        <div class="product-detail-page">
+            <div class="product-detail-header">
+                <div class="product-box-images">
+                    <div class="big-image spinner">
+                        <img class="lazy" src="{{ object.image.url }}" alt="{{ object.name }}">
+                    </div>
+                </div>
+                <div class="product-box-description">
+                    <h3 class="">{{ object.name }}</h3>
+                    <div class="product-buy">
+                        {% if object.materials.all.count > 0 %}
+                            <span class="product-price" id="product-price">
+
+                                        </span>
+                        {% else %}
+                            <span class="product-price">
+                                            €{{ object.price }}
+                                        </span>
+                        {% endif %}
+                        <form class="form_buying_product" action="{% url 'workshop:add_to_basket' %}">
+                            {% csrf_token %}
+                            <div class="add-to-cart">
+                                <div class="quantity-box">
+                                    <button type="submit" id="{{ object.id }}" class="submit_btn add-to-cart-button"
+                                            value="Submit">
+                                        <i class="ti-shopping-cart"></i>
+                                        {% trans 'add to cart' %}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="product-detail-content">
+                <div class="product-description-left">
+                    <div class="header-description">{% trans 'DESCRIPTION' %}</div>
+                    <div class="content-description">{{ object.description|safe }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

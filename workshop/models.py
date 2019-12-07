@@ -29,7 +29,7 @@ pre_save.connect(category_pre_save_receiver, sender=Category)
 
 class Service(models.Model):
     category = models.ForeignKey(to=Category, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='product', null=True, blank=True, default=None)
+    image = models.ImageField(upload_to='img', null=True, blank=True, default=None)
     name = models.CharField(verbose_name='Name', max_length=120, null=True, default=None)
     price = models.DecimalField(verbose_name='Price', max_digits=10, decimal_places=2, default=0)
     old_price = models.DecimalField(verbose_name='Old price', max_digits=10, decimal_places=2, default=0)
@@ -70,10 +70,7 @@ class Basket(models.Model):
         items = self.services.all()
         total = 0
         for item in items:
-            if item.material:
-                total += item.material.price * item.amount
-            else:
-                total += item.product.price * item.amount
+            total += item.service.price
         self.total = Decimal(total)
         if self.coupon_code:
             self.discount()
@@ -104,6 +101,7 @@ class Basket(models.Model):
 
 class BasketItem(models.Model):
     service = models.ForeignKey(to='Service', null=True, on_delete=models.CASCADE, unique=False)
+    amount = models.IntegerField(verbose_name='Amount', default=0)
 
     def __str__(self):
         return self.service.name
