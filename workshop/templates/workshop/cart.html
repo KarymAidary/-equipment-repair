@@ -1,10 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'workshop/base.html' %}
+{% load static i18n %}
+{% block content %}
+    <div class="popUp">
+        <div class="popUp-body">
+        </div>
+    </div>
+    <div class="main-wrapper">
+        {% if product_total > 0 %}
+            <div class="basket-wrapper">
+                <div class="basket">
+                    <div class="checkout-container">
+                        <ul class="cart-items w-100 float-left">
+                            <li class="cart-items-labels row">
+                                <span class="col-md-6 text-muted small">{% trans 'product' %}</span>
+                            </li>
+                            {% for product_basket in basket.services.all %}
+                                <li class="basket-items row pb-2">
+                                        <span class="cart-image col-sm-2">
+                                                <a href="#"><img alt="product description"
+                                                                 src="{{ product_basket.service.image.url }}"></a>
+                                        </span>
+                                    <div class="cart-item-right col-md-10">
+                                        <div class="row">
+                                                <span class="cart-description col-md-5">
+                                            <a class="h5 product-name" href="#">{{ product_basket.service.name }}</a>
+                                                <span class="float-left col-md-12 px-0">
+                                            {% if product_basket.size is not None %}
+                                                <a class="h6 text-muted" href="#">{% trans 'Size:' %}{{ product_basket.size }}</a>
+                                            {% endif %}
+                                            </span>
+                                            <span class="float-left col-md-12 px-0">
+                                            {% if product_basket.material.id is not None %}
+                                                <a class="h6 text-muted"
+                                                   href="#">{% trans 'Material:' %}{{ product_basket.material.name }}</a>
 
-</body>
-</html>
+                                            {% else %}
+                                                <span class="cart-item-price h5 text-muted float-left col-md-10 px-0">{{ product_basket.service.price }}  €</span>
+                                            {% endif %}
+                                            <span class="text-right col-md-5 col-sm-12">
+                                                    <form class="form_buying_product"
+                                                          action="{% url 'workshop:remove_from_basket' %}">{% csrf_token %}
+                                                        <a class="cart-remove" href="#"
+                                                           data-product_id="{{ product_basket.id }}">
+                                                            <span class="ti-trash icon float-right"></span>
+                                                        </a>
+                                                    </form>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="cart-right">
+                        <ul class="cart-summary">
+                            <li>{% trans 'Total' %} <span id="total">{{ basket.total }} €</span></li>
+                        </ul>
+                        <div class="cart-discount">
+                            <form class="cupon_code" method="post" action="{% url 'workshop:discount' %}">
+                                {% csrf_token %}
+                                <input type="text" name="code" required="" class="form-control" id="id_code"
+                                       placeholder="{% trans 'Coupon code' %}" maxlength="225" title="">
+                                <button id="apply" class="width-100 btn btn-margin btn-default" type="submit"><span
+                                        class="ti-gift"></span>{% trans 'Apply' %}
+                                </button>
+                            </form>
+                        </div>
+                        <a class="btn btn-margin btn-primary width-100"
+                           href="{% url 'workshop:checkout_step_one' basket_url %}">
+                            {% trans 'Order now' %} <span class="ti-arrow-right"></span>
+                        </a>
+                    </div>
+                </div>
+                <div style="clear: both;"></div>
+            </div>
+        {% else %}
+            <div class="empty-basket">
+                <div class="empty">{% trans 'Your cart is empty.' %} <a href="{% url 'workshop:products' %}">
+                    {% trans 'Continue shopping' %}
+                    <span class="ti-arrow-right small"></span></a></div>
+            </div>
+        {% endif %}
+        <div class="empty-basket" style="display: none"></div>
+        <div class="push"></div>
+    </div>
+
+{% endblock %}

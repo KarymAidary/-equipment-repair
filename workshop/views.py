@@ -103,8 +103,8 @@ def checkout_step_one(request, basket_url):
         session_key = Signer().unsign(basket_url)
         basket = Basket.objects.get(session_key=session_key)
     except:
-        return HttpResponseRedirect(reverse('core:main'))
-    template_name = 'shop/checkout.html'
+        return HttpResponseRedirect(reverse('workshop:service'))
+    template_name = 'workshop/checkout.html'
     initial_customer = Customer.objects.filter(session_key=session_key).first()
     if request.method == 'POST':
         form = CustomerForm(request.POST or None)

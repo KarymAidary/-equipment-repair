@@ -1,0 +1,57 @@
+{% extends 'workshop/base.html' %}
+{% load static i18n %}
+{% block content %}
+    <div class="container-fluid main-wrapper">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="container-fluid">
+                        <div class="col-lg-12 mt-5 mb-5 w-100 "><h3>{% trans 'Checkout' %} <span class="small text-muted">{% trans 'step' %} 1</span></h3></div>
+                        <div class="col-lg-12">
+                            <form class="form-horizontal" method="post">
+                                {% csrf_token %}
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-8 checkout-container border">
+                                        <ul class="checkout-step">
+                                            <li>
+                                                <span class="ti-check icon"></span>
+                                                <span class="checkout-label">{% trans 'Cart' %}</span>
+                                            </li>
+                                            <li class="active">
+                                                <span class="ti-check icon"></span>
+                                                <span class="checkout-label">{% trans 'personal data' %}</span>
+                                            </li>
+                                            <li>
+                                                <span class="ti-check icon"></span>
+                                                <span class="checkout-label">{% trans 'shipping and payment' %} </span>
+                                            </li>
+                                        </ul>
+                                        <div class="h5">{% trans 'Personal information' %}</div>
+                                        {{ form }}
+{#                                        {% bootstrap_form_errors form %}#}
+{#                                        {% bootstrap_field form.email %}#}
+{#                                        {% bootstrap_field form.first_name %}#}
+{#                                        {% bootstrap_field form.last_name %}#}
+{#                                        <div class="h5">{% trans 'Delivery adress' %}</div>#}
+{#                                        {% bootstrap_field form.street %}#}
+{#                                        {% bootstrap_field form.country %}#}
+{#                                        {% bootstrap_field form.city %}#}
+{#                                        {% bootstrap_field form.post_code %}#}
+                                        <div class="checkout-buttons">
+                                            <a class="btn btn-primary float-left"
+                                               href="{% url 'workshop:checkout' %}"><span
+                                                    class="ti-arrow-left icon"></span> {% trans 'BACK TO CART' %}</a>
+                                            <button type="submit" class="btn btn-primary float-right">
+                                                {% trans 'SHIPPING PAYMENT ' %}
+                                                <span class="ti-arrow-right icon"></span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

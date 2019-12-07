@@ -8,7 +8,7 @@ def getting_basket_item(request):
     try:
         basket = Basket.objects.get(session_key=session_key)
         basket_url = basket.hashed_url
-        product_total = basket.products.count()
+        product_total = basket.services.count()
     except:
         product_total = 0
     return locals()
